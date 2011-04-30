@@ -1,27 +1,36 @@
 package burner;
 
-import java.util.Scanner;
+import java.io.File;
 
-public class Burner {
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.config.Configuration;
 
-   public static void main(String[] args) {
+public class Burner extends JavaPlugin {
+	public void onDisable() {
+		PluginDescriptionFile pdfFile = this.getDescription();
+		System.out.println(pdfFile.getName() + " version "
+				+ pdfFile.getVersion() + " is disabled.");
+	}
 
-       String name;
-       int age;
-       Scanner in = new Scanner(System.in);
-
-       // Reads a single line from the console 
-       // and stores into name variable
-       name = in.nextLine();
-
-       // Reads a integer from the console
-       // and stores into age variable
-       age=in.nextInt();
-       in.close();            
-       
-       // Prints name and age to the console
-       System.out.println("Name :"+name);
-       System.out.println("Age :"+age);
-
-    }
+	public void onEnable() {
+		PluginDescriptionFile pdfFile = this.getDescription();
+		File dir = new File("plugins"+File.separator+pdfFile.getName()+File.separator);
+		dir.mkdir();
+		File file=new File("plugins"+File.separator+pdfFile.getName()+File.separator,"config.yml");
+		Configuration config=new Configuration(file);
+		if(config.getProperty("Burn.seconds") != null){
+			System.out.println("Found property 'test");
+			System.out.println(config.getString("Burn.seconds"));
+		}
+		else{
+			System.out.println("Did not find property 'test");
+			config.setProperty("Burn.seconds", 1000);
+		}
+		config.save();
+		getCommand("burn").setExecutor(new BurnerCommand(this));
+		getCommand("suffocate").setExecutor(new BurnerSuffocate(this));
+		System.out.println(pdfFile.getName() + " version "
+				+ pdfFile.getVersion() + " is enabled!");
+	}
 }
