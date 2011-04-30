@@ -1,0 +1,10 @@
+name: Burner
+main: burner.Burner
+version: 0.2
+commands:
+  burn:
+    description: A more creative way to suicide than /kill! OPs can burn other players too.
+    usage: "Usage: '/burn' to set yourself on fire, '/burn playername' to burn a living entity like a player or monster."
+  suffocate:
+    description: Will spawn a tower that will kill the player.
+    usage: /suffocate player
